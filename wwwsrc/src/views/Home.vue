@@ -1,23 +1,29 @@
 <template>
-  <div class="home">
-    <h1>Welcome Home {{user.username}}</h1>
-    <button v-if="user.id" @click="logout">logout</button>
-    <router-link v-else :to="{name: 'login'}">Login</router-link>
+  <div class="home d-flex">
+    <keepcard v-for="keep in publicKeeps" :keep="keep"></keepcard>
+
   </div>
 </template>
 
 <script>
-export default {
-  name: "home",
-  computed: {
-    user() {
-      return this.$store.state.user;
+  import keepcard from "../components/keepcard.vue"
+  export default {
+    name: "home",
+
+    components: { keepcard },
+    computed: {
+      publicKeeps() {
+        if (this.$store.state.publicKeeps[0]) {
+          return this.$store.state.publicKeeps;
+        }
+        else return []
+
+      }
+    },
+    mounted() {
+      this.$store.dispatch("getPublicKeeps");
+    },
+    methods: {
     }
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    }
-  }
-};
+  };
 </script>

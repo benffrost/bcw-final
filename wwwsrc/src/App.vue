@@ -1,14 +1,54 @@
 <template>
   <div id="app">
-    <navbar></navbar>
-    <router-view />
+    <div class="container-fluid">
+      <div class="row border-bottom">
+        <div class="col-2">
+          <router-link :to="{name: 'home'}">
+            <h4>KEEPR</h4>
+          </router-link>
+        </div>
+        <div class="col-2">
+          <router-link v-if="user.id" :to="{name: 'dash'}">
+            <h4>DASHBRD</h4>
+          </router-link>
+        </div>
+        <div class="col-2">
+          <router-link v-if="user.id" :to="{name: 'CreateKeep'}">
+            <h4>NEWKEEP</h4>
+          </router-link>
+        </div>
+        <div class="col-3">
+          <router-link v-if="user.id" :to="{name: 'CreateVault'}">
+            <h4>NEWVAULT</h4>
+          </router-link>
+        </div>
+
+        <div class="col-2">
+          <router-link v-if="user.id" :to="{name: 'login'}" @click.native="logout">
+            <h4>LOGOUT</h4>
+          </router-link>
+          <router-link v-else :to="{name: 'login'}">
+            <h4>LOGIN</h4>
+          </router-link>
+        </div>
+      </div>
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-  import navbar from "../components/navbar.vue"
   export default {
-    components: { navbar }
+    computed: {
+      user() {
+        return this.$store.state.user;
+      }
+    },
+    methods: {
+      logout() {
+        this.$store.dispatch("logout");
+      }
+    }
   }
 </script>
 <style>
